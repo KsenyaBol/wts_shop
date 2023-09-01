@@ -9,20 +9,15 @@ class ApiClient {
   final client = HttpClient();
 
   Future<List<CategoriesData>> getCategoriesData() async {
-    final categoriesJson = await get('${FlutterConfig.get('BASE_URL')}common/category/list?${FlutterConfig
-        .get('WTS_SHOP_API_KEY')}') as List<dynamic>;
-    final categoriesList = categoriesJson
-        .map((dynamic e) => CategoriesData.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final categoriesJson = await get('http://ostest.whitetigersoft.ru/api/common/category/list?appKey=phynMLgDkiG06cECKA3LJATNiUZ1ijs-eNhTf0IGq4mSpJF3bD42MjPUjWwj7sqLuPy4_nBCOyX3-fRiUl6rnoCjQ0vYyKb-LR03x9kYGq53IBQ5SrN8G1jSQjUDplXF');
+    final categoriesList = List<CategoriesData>.from(categoriesJson);
     return categoriesList;
   }
 
   Future<List<ProductsData>> getProductsData(int categoryId) async {
-    final productsJson = await get('${FlutterConfig.get('BASE_URL')}common/product/list?id=$categoryId${FlutterConfig
-        .get('WTS_SHOP_API_KEY')}') as List<dynamic>;
-    final productsList = productsJson
-        .map((dynamic e) => ProductsData.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final productsJson = await get('${FlutterConfig.get('BASE_URL')}common/product/list?id=${categoryId}appKey=${FlutterConfig
+        .get('WTS_SHOP_API_KEY')}');
+    final productsList = List<ProductsData>.from(productsJson);
     return productsList;
   }
 

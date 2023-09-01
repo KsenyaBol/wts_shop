@@ -9,11 +9,6 @@ class CategoriesPage extends StatefulWidget {
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
 
-  @override
-  void  initState() {
-    // CategoriesModelProvider.read(context)?.model.reloadCategories();
-  }
-
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
@@ -21,6 +16,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    CategoriesModelProvider.read(context)?.model.reloadCategories();
 
     return Scaffold(
 
@@ -30,16 +27,29 @@ class _CategoriesPageState extends State<CategoriesPage> {
             model: categoriesModel,
             child: GridView.count(
               crossAxisCount: 2,
-              children: List.generate(categoriesModel.categories.length, (index) {
-                return const Center(
-                  child: _CategoriesWidget(),
-                );
-              }),
+              children:const [
+                _ReloadButton(),
+                Expanded(child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: _CategoriesWidget(),))
+              ]
             ),
           ))
     );
   }
 
+}
+
+class _ReloadButton extends StatelessWidget {
+  const _ReloadButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () => CategoriesModelProvider.read(context)?.model.reloadCategories(),
+        child: const Text('query Category'),
+    );
+  }
 }
 
 class _CategoriesWidget extends StatelessWidget {
